@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>931</width>
-    <height>810</height>
+    <width>1062</width>
+    <height>878</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,104 +22,72 @@
         <widget class="QLabel" name="label">
          <property name="geometry">
           <rect>
-           <x>160</x>
-           <y>10</y>
-           <width>101</width>
+           <x>200</x>
+           <y>0</y>
+           <width>111</width>
            <height>41</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bahnschrift</family>
-           <pointsize>16</pointsize>
           </font>
          </property>
          <property name="text">
-          <string>Raw image</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Raw image&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
+        <widget class="MplCanvas" name="raw" native="true">
+         <property name="geometry">
+          <rect>
+           <x>80</x>
+           <y>40</y>
+           <width>351</width>
+           <height>351</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QWidget" name="widget_2" native="true">
         <widget class="QLabel" name="label_2">
          <property name="geometry">
           <rect>
-           <x>530</x>
-           <y>10</y>
-           <width>151</width>
+           <x>170</x>
+           <y>0</y>
+           <width>161</width>
            <height>41</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bahnschrift</family>
-           <pointsize>16</pointsize>
           </font>
          </property>
          <property name="text">
-          <string>Processed image</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_3">
-         <property name="geometry">
-          <rect>
-           <x>160</x>
-           <y>380</y>
-           <width>101</width>
-           <height>41</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bahnschrift</family>
-           <pointsize>16</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>Histogram</string>
-         </property>
-        </widget>
-        <widget class="QWidget" name="raw" native="true">
-         <property name="geometry">
-          <rect>
-           <x>50</x>
-           <y>50</y>
-           <width>330</width>
-           <height>330</height>
-          </rect>
-         </property>
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="contextMenuPolicy">
-          <enum>Qt::CustomContextMenu</enum>
-         </property>
-         <property name="acceptDrops">
-          <bool>true</bool>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Processed image&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
         <widget class="MplCanvas" name="processed" native="true">
          <property name="geometry">
           <rect>
-           <x>440</x>
-           <y>50</y>
-           <width>330</width>
-           <height>330</height>
+           <x>80</x>
+           <y>40</y>
+           <width>351</width>
+           <height>351</height>
           </rect>
          </property>
         </widget>
-        <widget class="MplCanvas" name="hist" native="true">
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QWidget" name="widget_3" native="true">
+        <widget class="QLabel" name="label_3">
          <property name="geometry">
           <rect>
-           <x>50</x>
-           <y>430</y>
-           <width>330</width>
-           <height>330</height>
-          </rect>
-         </property>
-        </widget>
-        <widget class="QDoubleSpinBox" name="value">
-         <property name="geometry">
-          <rect>
-           <x>440</x>
-           <y>430</y>
+           <x>200</x>
+           <y>0</y>
            <width>111</width>
            <height>41</height>
           </rect>
@@ -127,87 +95,31 @@
          <property name="font">
           <font>
            <family>Bahnschrift</family>
-           <pointsize>12</pointsize>
           </font>
-         </property>
-         <property name="maximum">
-          <double>31.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.500000000000000</double>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="addBtn">
-         <property name="geometry">
-          <rect>
-           <x>570</x>
-           <y>430</y>
-           <width>111</width>
-           <height>41</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bahnschrift</family>
-           <pointsize>16</pointsize>
-          </font>
-         </property>
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
-          <string>Add</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Histogram&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
-        <widget class="QPushButton" name="mulBtn">
+        <widget class="MplCanvas" name="histogram" native="true">
          <property name="geometry">
           <rect>
-           <x>700</x>
-           <y>430</y>
-           <width>111</width>
-           <height>41</height>
+           <x>80</x>
+           <y>40</y>
+           <width>351</width>
+           <height>351</height>
           </rect>
          </property>
-         <property name="font">
-          <font>
-           <family>Bahnschrift</family>
-           <pointsize>16</pointsize>
-          </font>
-         </property>
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="text">
-          <string>Multiply</string>
-         </property>
         </widget>
-        <widget class="QPushButton" name="avgBtn">
-         <property name="geometry">
-          <rect>
-           <x>440</x>
-           <y>490</y>
-           <width>111</width>
-           <height>41</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bahnschrift</family>
-           <pointsize>16</pointsize>
-          </font>
-         </property>
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="text">
-          <string>Average</string>
-         </property>
-        </widget>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QWidget" name="widget_4" native="true">
         <widget class="QPushButton" name="shiftBtn">
          <property name="geometry">
           <rect>
-           <x>570</x>
-           <y>490</y>
+           <x>200</x>
+           <y>120</y>
            <width>111</width>
            <height>41</height>
           </rect>
@@ -228,14 +140,102 @@
         <widget class="MplCanvas" name="second" native="true">
          <property name="geometry">
           <rect>
-           <x>440</x>
-           <y>550</y>
+           <x>70</x>
+           <y>180</y>
            <width>111</width>
            <height>111</height>
           </rect>
          </property>
          <property name="cursor">
           <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="mulBtn">
+         <property name="geometry">
+          <rect>
+           <x>330</x>
+           <y>60</y>
+           <width>111</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bahnschrift</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string>Multiply</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="addBtn">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>60</y>
+           <width>111</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bahnschrift</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string>Add</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="avgBtn">
+         <property name="geometry">
+          <rect>
+           <x>70</x>
+           <y>120</y>
+           <width>111</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bahnschrift</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string>Average</string>
+         </property>
+        </widget>
+        <widget class="QDoubleSpinBox" name="value">
+         <property name="geometry">
+          <rect>
+           <x>70</x>
+           <y>60</y>
+           <width>111</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bahnschrift</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="maximum">
+          <double>31.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.500000000000000</double>
          </property>
         </widget>
        </widget>
