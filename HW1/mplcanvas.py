@@ -8,7 +8,6 @@ import matplotlib.pyplot as plt
 
 plt.axis('off')
 
-
 class MplCanvas(FigureCanvasQTAgg):
 
     def __init__(self, parent=None, dpi=75):
@@ -16,9 +15,12 @@ class MplCanvas(FigureCanvasQTAgg):
         # self.fig.set_facecolor('#222222')
         # self.fig = self.fig.add_subplot(111)
         self.axes = self.fig.add_subplot(111)
-        # print(type(self.axes))
+        self.axes.set_axis_off()
         super().__init__(self.fig)
 
+    # def event(self, e):
+    #     if e.button() == QtCore.Qt.LeftButton:
+    #         e.
     
     # def mousePressEvent(self, event):
     #     super(MplCanvas, self).mousePressEvent(event)

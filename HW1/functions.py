@@ -34,7 +34,7 @@ class myComputing(object):
                 else:
                     new_img[row][col] = img[:last_row][row][col]
 
-        print(new_img.shape, new_img)
+        # print(new_img.shape, new_img)
         
         # value = list(dic.values())
         key = list(dic.keys())
@@ -44,10 +44,4 @@ class myComputing(object):
         self.height = [x[1] for x in sort]
         self.title = title
         self.raw_img = new_img
-
-    def add_processed(self, value):
-        self.processed_img = self.raw_img + value
-
-    def mul_processed(self, value):
-        self.processed_img = self.raw_img * value
-        
+        return new_img
