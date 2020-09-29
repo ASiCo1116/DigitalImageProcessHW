@@ -57,8 +57,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.shiftBtn.clicked.connect(self.shift)
         self.avgBtn.clicked.connect(self.average)
         self.id1 = self.raw2_widget.fig.canvas.mpl_connect('button_press_event', self.onclick)
+        # self.raw2_widget.axes.text(150, 150,'TEST TEST TEST TEST', C='black', fontsize = 32) 
+        # self.raw2_widget.draw()
     
     def onclick(self, e):
+        
         imgChoose, _ = QFileDialog.getOpenFileName(self,  
                                     "Open image",  
                                     self.cwd,  

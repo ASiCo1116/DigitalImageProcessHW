@@ -11,7 +11,7 @@ plt.axis('off')
 class MplCanvas(FigureCanvasQTAgg):
 
     def __init__(self, parent=None, dpi=75):
-        self.fig = Figure(figsize=(5, 4), dpi=150)
+        self.fig = Figure(figsize=(1, 1), dpi=150)
         # self.fig.set_facecolor('#222222')
         # self.fig = self.fig.add_subplot(111)
         self.axes = self.fig.add_subplot(111)
