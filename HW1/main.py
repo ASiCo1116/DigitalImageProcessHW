@@ -1,7 +1,9 @@
-import numpy as np
+# -*- coding: utf-8 -*-
+
 from sys import argv
 from os import getcwd
 from pandas import read_csv
+from numpy import zeros, arange, float32
 
 from PyQt5.QtCore import (QSize)
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QHBoxLayout, QWidget, QFileDialog)
@@ -25,9 +27,9 @@ def to_raw_pic(file):
             dic[f'{str(s)}'] = strings.count(str(s))
 
     if img[-1] == '\x1a':
-        new_img = np.zeros(shape = (img[:-1].shape[0], 64))
+        new_img = zeros(shape = (img[:-1].shape[0], 64))
     else:
-        new_img = np.zeros(shape = (img[:].shape[0], 64))
+        new_img = zeros(shape = (img[:].shape[0], 64))
 
     for row in range(new_img.shape[0]):
         for col in range(new_img.shape[1]):
@@ -49,7 +51,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.setupUi(self)
         self.cwd = getcwd()
-        self.raw_img = np.zeros(shape = (64, 64)).astype(np.float32)
+        self.raw_img = zeros(shape = (64, 64)).astype(float32)
 
         self.actionreadImage.triggered.connect(self.onReadFile)
         self.addValue.valueChanged.connect(self.add)
@@ -60,6 +62,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # self.raw2_widget.axes.text(150, 150,'TEST TEST TEST TEST', C='black', fontsize = 32) 
         # self.raw2_widget.draw()
     
+    '''
+    Click to read the second picture
+    '''
+
     def onclick(self, e):
         
         imgChoose, _ = QFileDialog.getOpenFileName(self,  
@@ -83,7 +89,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     # def onclick2(self, e):
     #     print(e)
         
-
+    '''
+    NOT DONE YET
+    '''
     def saveImage(self):
         imageChoose, _ = QFileDialog.getSaveFileName(self,  
                                     "Save image",  
@@ -105,7 +113,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         processed_widget.draw()
 
         hist_widget.axes.cla()
-        hist_widget.axes.hist(img.flatten(), bins = np.arange(33) - .5)
+        hist_widget.axes.hist(img.flatten(), bins = arange(33) - .5)
         hist_widget.axes.set_title(self.title)
         hist_widget.axes.set_xticks(ticks = list(range(0, 32, 5)), minor = False)
         hist_widget.draw()
@@ -140,20 +148,44 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     '''
     def add(self):
         self.mulValue.setProperty("value", 1.0)
-        self.rePlot(self.histogram_widget, self.processed_widget, self.raw_img + int(self.addValue.value()))
+
+        old = self.raw_img + int(self.addValue.value())
+        new_img = zeros(shape = self.raw_img.shape)
+
+        for r in range(self.raw_img.shape[0]):
+            for c in range(self.raw_img.shape[1]):
+                if old[r][c] > 31:
+                    new_img[r][c] = 31
+                elif old[r][c] < 0:
+                    new_img[r][c] = 0
+                else:
+                    new_img[r][c] = old[r][c]
+
+        self.rePlot(self.histogram_widget, self.processed_widget, new_img)
         
     '''
     Multiplying activate when value change
     '''
     def multiply(self):
         self.addValue.setProperty("value", 0.0)
-        self.rePlot(self.histogram_widget, self.processed_widget, self.raw_img * float(self.mulValue.value()))
+
+        old = self.raw_img * float(self.mulValue.value())
+        new_img = zeros(shape = self.raw_img.shape)
+
+        for r in range(self.raw_img.shape[0]):
+            for c in range(self.raw_img.shape[1]):
+                if old[r][c] > 31:
+                    new_img[r][c] = 31
+                else:
+                    new_img[r][c] = old[r][c]
+
+        self.rePlot(self.histogram_widget, self.processed_widget, new_img)
         
     '''
     Shifting the image 
     '''
     def shift(self):
-        shift_img = np.zeros(shape = self.raw_img.shape)
+        shift_img = zeros(shape = self.raw_img.shape)
         for row in range(self.raw_img.shape[0]):
             for col in range(self.raw_img.shape[1]):
 
@@ -166,7 +198,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.mulValue.setProperty("value", 1.0)
         self.rePlot(self.histogram_widget, self.processed_widget, shift_img)
         
-
+    '''
+    Averaging two pictures
+    '''
     def average(self):
         self.mulValue.setProperty("value", 1.0)
         self.addValue.setProperty("value", 0.0)
