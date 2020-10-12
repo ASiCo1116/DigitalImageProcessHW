@@ -82,7 +82,7 @@
           <string>Subtract histogram</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </widget>
@@ -92,41 +92,85 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="MplCanvas" name="raw" native="true"/>
+       <widget class="MplCanvas" name="raw" native="true">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+       </widget>
       </item>
       <item>
-       <widget class="MplCanvas" name="gray1" native="true"/>
+       <widget class="MplCanvas" name="gray1" native="true">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+       </widget>
       </item>
       <item>
-       <widget class="MplCanvas" name="gray1_hist" native="true"/>
+       <widget class="MplCanvas" name="gray1_hist" native="true">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+       </widget>
       </item>
       <item>
-       <widget class="MplCanvas" name="gray2" native="true"/>
+       <widget class="MplCanvas" name="gray2" native="true">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+       </widget>
       </item>
       <item>
-       <widget class="MplCanvas" name="gray2_hist" native="true"/>
+       <widget class="MplCanvas" name="gray2_hist" native="true">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+       </widget>
       </item>
       <item>
-       <widget class="MplCanvas" name="subtract_hist" native="true"/>
+       <widget class="MplCanvas" name="subtract_hist" native="true">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
-       <widget class="MplCanvas" name="resize" native="true"/>
+       <widget class="MplCanvas" name="resize" native="true">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+       </widget>
       </item>
       <item>
-       <widget class="MplCanvas" name="resize_gray" native="true"/>
+       <widget class="MplCanvas" name="resize_gray" native="true">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+       </widget>
       </item>
       <item>
-       <widget class="MplCanvas" name="resize_hist" native="true"/>
+       <widget class="MplCanvas" name="resize_hist" native="true">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+       </widget>
       </item>
       <item>
-       <widget class="MplCanvas" name="bright_contrast" native="true"/>
+       <widget class="MplCanvas" name="bright_contrast" native="true">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+       </widget>
       </item>
       <item>
-       <widget class="MplCanvas" name="binary" native="true"/>
+       <widget class="MplCanvas" name="binary" native="true">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -288,6 +332,9 @@
            <family>Bahnschrift Light</family>
            <pointsize>16</pointsize>
           </font>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
           <string>Equalization</string>

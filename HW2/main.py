@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from math import floor, ceil
 from cv2 import imread, split, merge
 from sys import argv
 from os import getcwd
@@ -15,6 +16,39 @@ def dotFunction(img, x, y):
     
     return array([[x, 0], [0, y]])
 
+def bilinearInterpolation(image, ratio):
+
+    img_height, img_width = image.shape[:2]
+    height, width = int(img_height * (ratio/100)), int(img_width * (ratio/100))
+
+    resized = zeros(shape = (height, width))
+
+    x_ratio = float(img_width - 1) / (width - 1) if width > 1 else 0
+    y_ratio = float(img_height - 1) / (height - 1) if height > 1 else 0
+
+    for i in range(height):
+        for j in range(width):
+
+            x_l, y_l = floor(x_ratio * j), floor(y_ratio * i)
+            x_h, y_h = ceil(x_ratio * j), ceil(y_ratio * i)
+
+            x_weight = (x_ratio * j) - x_l
+            y_weight = (y_ratio * i) - y_l
+
+            a = image[y_l, x_l]
+            b = image[y_l, x_h]
+            c = image[y_h, x_l]
+            d = image[y_h, x_h]
+
+            pixel = a * (1 - x_weight) * (1 - y_weight) + \
+                    b * x_weight * (1 - y_weight) + \
+                    c * y_weight * (1 - x_weight) + \
+                    d * x_weight * y_weight
+
+            resized[i][j] = pixel
+
+    return resized
+
 '''
 Main ui
 '''
@@ -25,6 +59,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.cwd = getcwd()
         self.raw.fig.canvas.mpl_connect('button_press_event', self.onclick)
+        
+        
+        self.resize_slider.setProperty('value', 100)
+        self.resize_slider.setMinimum(10)
+        self.resize_slider.setMaximum(200)
 
         self.binary_slider.setProperty('value', 128)
         self.binary_slider.setMinimum(0)
@@ -41,6 +80,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.binary_slider.valueChanged.connect(self.binaryValueChanged)
         self.bright_slider.valueChanged.connect(self.brightnessValueChanged)
         self.contrast_slider.valueChanged.connect(self.contrastValueChanged)
+        self.resize_slider.valueChanged.connect(self.resizeValueChanged)
     
     '''
     Read picture function
@@ -109,9 +149,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.bright_contrast.axes.set_axis_off()
         self.bright_contrast.draw()
 
+        self.resize_gray_img = self.gray1_img.copy()
+        self.resize_gray.axes.cla()
+        self.resize_gray.axes.imshow(self.resize_gray_img, cmap='gray')
+        self.resize_gray.axes.set_axis_off()
+        self.resize_gray.draw()
+
     def binaryValueChanged(self, v):
         self.binary_img[self.gray1_img >= v] = 255
-        self.binary_img[self.gray1_img < v] = 0
+        self.binary_img[self.gray1_img <= v] = 0
 
         self.binary.axes.cla()
         self.binary.axes.imshow(self.binary_img, cmap='gray', vmin=0, vmax=255)
@@ -142,6 +188,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         new_image[new_image < 0] = 0
         return new_image
 
+    def resizeValueChanged(self, v):
+        self.resize_gray.axes.cla()
+        self.resize_gray.axes.imshow(bilinearInterpolation(self.resize_gray_img, v), cmap='gray', vmin=0, vmax=255)
+        self.resize_gray.axes.set_axis_off()
+        self.resize_gray.draw()
 
     '''
     NOT DONE YET
