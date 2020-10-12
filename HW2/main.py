@@ -1,46 +1,19 @@
 # -*- coding: utf-8 -*-
 
+from cv2 import imread, split, merge
 from sys import argv
 from os import getcwd
-from pandas import read_csv
-from numpy import zeros, arange, float32
+# from pandas import read_csv
+from numpy import zeros, arange, float32, sum, array
 
 from PyQt5.QtCore import (QSize)
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QHBoxLayout, QWidget, QFileDialog)
 
 from MainWindow import Ui_MainWindow
 
-'''
-Read .64 file and convert to int array[0, 32)
-'''
-def to_raw_pic(file):
-    img = read_csv(file)
-    img = img.to_numpy().flatten()
-    strings = ''
-
-    for row in img:
-        strings += row
-
-    dic = {}
-    for s in strings:
-        if not s == '\x1a':
-            dic[f'{str(s)}'] = strings.count(str(s))
-
-    if img[-1] == '\x1a':
-        new_img = zeros(shape = (img[:-1].shape[0], 64))
-    else:
-        new_img = zeros(shape = (img[:].shape[0], 64))
-
-    for row in range(new_img.shape[0]):
-        for col in range(new_img.shape[1]):
-            last_row = -1 if img[-1] == '\x1a' else new_img.shape[1] + 1
-
-            if img[:last_row][row][col].isalpha():
-                new_img[row][col] = ord(img[:last_row][row][col]) - 55
-            else:
-                new_img[row][col] = img[:last_row][row][col]
-
-    return new_img
+def dotFunction(img, x, y):
+    
+    return array([[x, 0], [0, y]])
 
 '''
 Main ui
@@ -51,11 +24,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.setupUi(self)
         self.cwd = getcwd()
-        self.raw_img = zeros(shape = (64, 64)).astype(float32)
+        self.raw.fig.canvas.mpl_connect('button_press_event', self.onclick)
 
+        self.binary_slider.setProperty('value', 128)
+        self.binary_slider.setMinimum(0)
+        self.binary_slider.setMaximum(255)
+
+        self.bright_slider.setProperty('value', 0)
+        self.bright_slider.setMinimum(-255)
+        self.bright_slider.setMaximum(255)
+
+        self.contrast_slider.setProperty('value', 0)
+        self.contrast_slider.setMinimum(-100)
+        self.contrast_slider.setMaximum(100)
+
+        self.binary_slider.valueChanged.connect(self.binaryValueChanged)
+        self.bright_slider.valueChanged.connect(self.brightnessValueChanged)
+        self.contrast_slider.valueChanged.connect(self.contrastValueChanged)
     
     '''
-    Click to read the second picture
+    Read picture function
     '''
 
     def onclick(self, e):
@@ -63,24 +51,98 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         imgChoose, _ = QFileDialog.getOpenFileName(self,  
                                     "Open image",  
                                     self.cwd,  
-                                    "Image Files (*.64)") 
+                                    "Image Files (*.png *.jpg *.jpeg)") 
 
         if imgChoose == "":
             return
+
+        self.raw_img = imread(imgChoose)
+        b,g,r = split(self.raw_img)
+        self.raw_img = merge([r,g,b])
+        self.raw.axes.cla()
+        self.raw.axes.imshow(self.raw_img)
+        self.raw.axes.set_axis_off()
+        self.raw.draw()
+
+        self.gray1_img = sum(self.raw_img, axis=2) / 3.0
         
-        self.raw2_img = to_raw_pic(imgChoose)
-        self.title2 = imgChoose.split(imgChoose[:imgChoose.rfind('/') + 1])[1]
-
-        self.raw2_widget.axes.cla()
-        self.raw2_widget.axes.imshow(self.raw2_img, cmap = 'gray')
-        # self.raw2_widget.axes.set_title(self.title2)
-        self.raw2_widget.axes.set_axis_off()
-        self.raw2_widget.draw()
-
-
-    # def onclick2(self, e):
-    #     print(e)
+        self.gray1.axes.cla()
+        self.gray1.axes.imshow(self.gray1_img, cmap='gray')
+        self.gray1.axes.set_axis_off()
+        self.gray1.draw()
         
+        self.gray1_hist.axes.cla()
+        self.gray1_hist.axes.hist(self.gray1_img.flatten(), bins=arange(255) - .5)
+        # self.gray1_hist.axes.set_title('grayscale histogram', fontsize=12)
+        self.gray1_hist.axes.set_axis_off()
+        self.gray1_hist.draw()
+
+        self.gray2_img = self.raw_img[:, :, 0] * 0.299 + self.raw_img[:, :, 1] * 0.587 + self.raw_img[:, :, 2] * 0.114
+        self.gray2.axes.cla()
+        self.gray2.axes.imshow(self.gray2_img, cmap='gray')
+        self.gray2.axes.set_axis_off()
+        self.gray2.draw()
+        
+        self.gray2_hist.axes.cla()
+        self.gray2_hist.axes.hist(self.gray2_img.flatten(), bins=arange(255) - .5)
+        # self.gray2_hist.axes.set_title('grayscale histogram', fontsize=12)
+        self.gray2_hist.axes.set_axis_off()
+        self.gray2_hist.draw()
+
+        self.subtract_hist.axes.cla()
+        self.subtract_hist.axes.hist((self.gray2_img - self.gray1_img).flatten(), bins = arange(255) - .5)
+        self.subtract_hist.axes.set_axis_off()
+        self.subtract_hist.draw()
+
+        self.binary_img = zeros(shape = self.gray1_img.shape)
+        self.binary_img[self.gray1_img >= 128] = 255
+        self.binary_img[self.gray1_img < 128] = 0
+
+        self.binary.axes.cla()
+        self.binary.axes.imshow(self.binary_img, cmap='gray', vmin=0, vmax=255)
+        self.binary.axes.set_axis_off()
+        self.binary.draw()
+
+        self.bright_contrast_img = self.gray1_img.copy()
+        self.bright_contrast.axes.cla()
+        self.bright_contrast.axes.imshow(self.bright_contrast_img, cmap='gray')
+        self.bright_contrast.axes.set_axis_off()
+        self.bright_contrast.draw()
+
+    def binaryValueChanged(self, v):
+        self.binary_img[self.gray1_img >= v] = 255
+        self.binary_img[self.gray1_img < v] = 0
+
+        self.binary.axes.cla()
+        self.binary.axes.imshow(self.binary_img, cmap='gray', vmin=0, vmax=255)
+        self.binary.axes.set_axis_off()
+        self.binary.draw()
+
+    def brightnessValueChanged(self, v):
+        self.bright_contrast.axes.cla()
+        self.bright_contrast.axes.imshow(self.brightness_contrast(v, self.contrast_slider.value()), cmap='gray', vmin=0, vmax=255)
+        self.bright_contrast.axes.set_axis_off()
+        self.bright_contrast.draw()
+    
+    def contrastValueChanged(self, v):  #v from -254 to 258
+        self.bright_contrast.axes.cla()
+        self.bright_contrast.axes.imshow(self.brightness_contrast(self.bright_slider.value(), v), cmap='gray', vmin=0, vmax=255)
+        self.bright_contrast.axes.set_axis_off()
+        self.bright_contrast.draw()
+    
+    def brightness_contrast(self, b, c):
+        b_img = (self.bright_contrast_img + b).copy()
+        b_img[b_img > 255] = 255
+        b_img[b_img < 0] = 0
+
+        factor = 259 * (c + 255) / (255 * (259 - c))
+        new_image = (factor * (b_img - 128) + 128).copy()
+
+        new_image[new_image > 255] = 255
+        new_image[new_image < 0] = 0
+        return new_image
+
+
     '''
     NOT DONE YET
     '''
