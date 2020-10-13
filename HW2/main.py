@@ -1,25 +1,33 @@
 # -*- coding: utf-8 -*-
 
-from math import floor, ceil
-from cv2 import imread, split, merge
 from sys import argv
 from os import getcwd
-# from pandas import read_csv
-from numpy import zeros, arange, float32, sum, array
+from math import floor, ceil
+from cv2 import imread, split, merge
+from numpy import zeros, arange, float32, sum, array, histogram, cumsum, int, around
 
 from PyQt5.QtCore import (QSize)
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QHBoxLayout, QWidget, QFileDialog)
 
 from MainWindow import Ui_MainWindow
 
-def dotFunction(img, x, y):
-    
-    return array([[x, 0], [0, y]])
+def equalization(image):
+    image = image.astype(int)
+    pdf, bins = histogram(image, bins=arange(256), density=True)
+    cdf = cumsum(pdf * 255)
+    cdf = around(cdf, 0)
+
+    new_image = zeros(shape = image.shape)
+    for row in range(image.shape[0]):
+        for col in range(image.shape[1]):
+            new_image[row][col] = cdf[image[row][col]]
+
+    return new_image
 
 def bilinearInterpolation(image, ratio):
 
     img_height, img_width = image.shape[:2]
-    height, width = int(img_height * (ratio/100)), int(img_width * (ratio/100))
+    height, width = int(img_height * (ratio/100) + 1), int(img_width * (ratio/100) + 1)
 
     resized = zeros(shape = (height, width))
 
@@ -81,6 +89,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.bright_slider.valueChanged.connect(self.brightnessValueChanged)
         self.contrast_slider.valueChanged.connect(self.contrastValueChanged)
         self.resize_slider.valueChanged.connect(self.resizeValueChanged)
+        self.equal_btn.clicked.connect(self.equalizationClicked)
     
     '''
     Read picture function
@@ -193,6 +202,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.resize_gray.axes.imshow(bilinearInterpolation(self.resize_gray_img, v), cmap='gray', vmin=0, vmax=255)
         self.resize_gray.axes.set_axis_off()
         self.resize_gray.draw()
+    
+    def equalizationClicked(self):
+
+        self.bright_contrast.axes.cla()
+        self.bright_contrast.axes.imshow(equalization(self.bright_contrast_img), cmap='gray', vmin = 0, vmax = 255)
+        self.bright_contrast.axes.set_axis_off()
+        # self.bright_contrast.draw()
 
     '''
     NOT DONE YET
@@ -209,19 +225,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     '''
     Replotting histogram and processed image when value changes
     '''
-    def rePlot(self, hist_widget, processed_widget, img):
+    def rePlot(self, processed_widget, img, hist_widget = None):
        
         processed_widget.axes.cla()
-        processed_widget.axes.imshow(img, cmap = 'gray', vmin = 0, vmax = 31)
-        processed_widget.axes.set_title(self.title)
+        processed_widget.axes.imshow(img, cmap = 'gray', vmin = 0, vmax = 255)
+        # processed_widget.axes.set_title(self.title)
         processed_widget.axes.set_axis_off()
         processed_widget.draw()
-
-        hist_widget.axes.cla()
-        hist_widget.axes.hist(img.flatten(), bins = arange(33) - .5)
-        hist_widget.axes.set_title(self.title)
-        hist_widget.axes.set_xticks(ticks = list(range(0, 32, 5)), minor = False)
-        hist_widget.draw()
+        
+        if hist_widget != None:
+            hist_widget.axes.cla()
+            hist_widget.axes.hist(img.flatten(), bins = arange(33) - .5)
+            hist_widget.axes.set_title(self.title)
+            hist_widget.axes.set_xticks(ticks = list(range(0, 32, 5)), minor = False)
+            hist_widget.draw()
 
     '''
     Open read file dialog
@@ -248,69 +265,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.rePlot(self.histogram_widget, self.processed_widget, self.raw_img)
         
-    '''
-    Adding activate when value change
-    '''
-    def add(self):
-        self.mulValue.setProperty("value", 1.0)
-
-        old = self.raw_img + int(self.addValue.value())
-        new_img = zeros(shape = self.raw_img.shape)
-
-        for r in range(self.raw_img.shape[0]):
-            for c in range(self.raw_img.shape[1]):
-                if old[r][c] > 31:
-                    new_img[r][c] = 31
-                elif old[r][c] < 0:
-                    new_img[r][c] = 0
-                else:
-                    new_img[r][c] = old[r][c]
-
-        self.rePlot(self.histogram_widget, self.processed_widget, new_img)
-        
-    '''
-    Multiplying activate when value change
-    '''
-    def multiply(self):
-        self.addValue.setProperty("value", 0.0)
-
-        old = self.raw_img * float(self.mulValue.value())
-        new_img = zeros(shape = self.raw_img.shape)
-
-        for r in range(self.raw_img.shape[0]):
-            for c in range(self.raw_img.shape[1]):
-                if old[r][c] > 31:
-                    new_img[r][c] = 31
-                else:
-                    new_img[r][c] = old[r][c]
-
-        self.rePlot(self.histogram_widget, self.processed_widget, new_img)
-        
-    '''
-    Shifting the image 
-    '''
-    def shift(self):
-        shift_img = zeros(shape = self.raw_img.shape)
-        for row in range(self.raw_img.shape[0]):
-            for col in range(self.raw_img.shape[1]):
-
-                if col > 0:
-                    shift_img[row][col] = self.raw_img[row][col] -  self.raw_img[row][col - 1]
-                else:
-                    shift_img[row][col] = 0
-        
-        self.addValue.setProperty("value", 0.0)
-        self.mulValue.setProperty("value", 1.0)
-        self.rePlot(self.histogram_widget, self.processed_widget, shift_img)
-        
-    '''
-    Averaging two pictures
-    '''
-    def average(self):
-        self.mulValue.setProperty("value", 1.0)
-        self.addValue.setProperty("value", 0.0)
-        self.rePlot(self.histogram_widget, self.processed_widget, (self.raw_img + self.raw2_img)/2)
-
 app = QApplication(argv)
 
 window = MainWindow()
