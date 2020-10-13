@@ -17,10 +17,13 @@ def equalization(image):
     cdf = cumsum(pdf * 255)
     cdf = around(cdf, 0)
 
-    new_image = zeros(shape = image.shape)
+    new_image = zeros(shape=image.shape)
     for row in range(image.shape[0]):
         for col in range(image.shape[1]):
-            new_image[row][col] = cdf[image[row][col]]
+            if image[row][col] == 255:
+                new_image[row][col] = 255
+            else:
+                new_image[row][col] = cdf[image[row][col]]
 
     return new_image
 
@@ -165,25 +168,33 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.resize_gray.draw()
 
     def binaryValueChanged(self, v):
-        self.binary_img[self.gray1_img >= v] = 255
-        self.binary_img[self.gray1_img <= v] = 0
+        
+        # self.binary_img[self.gray1_img >= v] = 255
+        # self.binary_img[self.gray1_img <= v] = 0
 
-        self.binary.axes.cla()
-        self.binary.axes.imshow(self.binary_img, cmap='gray', vmin=0, vmax=255)
-        self.binary.axes.set_axis_off()
-        self.binary.draw()
+        # self.binary.axes.cla()
+        # self.binary.axes.imshow(self.binary_img, cmap='gray', vmin=0, vmax=255)
+        # self.binary.axes.set_axis_off()
+        # self.binary.draw()
+
+        self.rePlot(self.binary_img, self.binary, self.resize_hist)
+
 
     def brightnessValueChanged(self, v):
-        self.bright_contrast.axes.cla()
-        self.bright_contrast.axes.imshow(self.brightness_contrast(v, self.contrast_slider.value()), cmap='gray', vmin=0, vmax=255)
-        self.bright_contrast.axes.set_axis_off()
-        self.bright_contrast.draw()
+        # self.bright_contrast.axes.cla()
+        # self.bright_contrast.axes.imshow(self.brightness_contrast(v, self.contrast_slider.value()), cmap='gray', vmin=0, vmax=255)
+        # self.bright_contrast.axes.set_axis_off()
+        # self.bright_contrast.draw()
+
+        self.rePlot(self.brightness_contrast(v, self.contrast_slider.value()), self.bright_contrast, self.resize_hist)
     
     def contrastValueChanged(self, v):  #v from -254 to 258
-        self.bright_contrast.axes.cla()
-        self.bright_contrast.axes.imshow(self.brightness_contrast(self.bright_slider.value(), v), cmap='gray', vmin=0, vmax=255)
-        self.bright_contrast.axes.set_axis_off()
-        self.bright_contrast.draw()
+        # self.bright_contrast.axes.cla()
+        # self.bright_contrast.axes.imshow(self.brightness_contrast(self.bright_slider.value(), v), cmap='gray', vmin=0, vmax=255)
+        # self.bright_contrast.axes.set_axis_off()
+        # self.bright_contrast.draw()
+
+        self.rePlot(self.brightness_contrast(self.bright_slider.value(), v), self.bright_contrast, self.resize_hist)
     
     def brightness_contrast(self, b, c):
         b_img = (self.bright_contrast_img + b).copy()
@@ -198,17 +209,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return new_image
 
     def resizeValueChanged(self, v):
-        self.resize_gray.axes.cla()
-        self.resize_gray.axes.imshow(bilinearInterpolation(self.resize_gray_img, v), cmap='gray', vmin=0, vmax=255)
-        self.resize_gray.axes.set_axis_off()
-        self.resize_gray.draw()
+        # self.resize_gray.axes.cla()
+        # self.resize_gray.axes.imshow(bilinearInterpolation(self.resize_gray_img, v), cmap='gray', vmin=0, vmax=255)
+        # self.resize_gray.axes.set_axis_off()
+        # self.resize_gray.draw()
+
+        self.rePlot(bilinearInterpolation(self.resize_gray_img, v), self.resize_gray, self.resize_hist)
     
     def equalizationClicked(self):
-
-        self.bright_contrast.axes.cla()
-        self.bright_contrast.axes.imshow(equalization(self.bright_contrast_img), cmap='gray', vmin = 0, vmax = 255)
-        self.bright_contrast.axes.set_axis_off()
+        # self.bright_contrast.axes.cla()
+        # self.bright_contrast.axes.imshow(equalization(self.bright_contrast_img), cmap='gray', vmin = 0, vmax = 255)
+        # self.bright_contrast.axes.set_axis_off()
         # self.bright_contrast.draw()
+        
+        self.rePlot(equalization(self.bright_contrast_img), self.bright_contrast, self.resize_hist)
 
     '''
     NOT DONE YET
@@ -225,19 +239,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     '''
     Replotting histogram and processed image when value changes
     '''
-    def rePlot(self, processed_widget, img, hist_widget = None):
+    def rePlot(self, img, processed_widget, hist_widget = None):
        
         processed_widget.axes.cla()
         processed_widget.axes.imshow(img, cmap = 'gray', vmin = 0, vmax = 255)
-        # processed_widget.axes.set_title(self.title)
         processed_widget.axes.set_axis_off()
         processed_widget.draw()
         
         if hist_widget != None:
+            img = img.flatten()
+            img[img >= 255] = 255
+            img[img <= 0] = 0
+            # print(img)
             hist_widget.axes.cla()
-            hist_widget.axes.hist(img.flatten(), bins = arange(33) - .5)
-            hist_widget.axes.set_title(self.title)
-            hist_widget.axes.set_xticks(ticks = list(range(0, 32, 5)), minor = False)
+            hist_widget.axes.hist(img, bins=arange(256) - .5)
+            hist_widget.axes.set_axis_off()
+            # hist_widget.axes.set_xticks(ticks = list(range(0, 256, 5)), minor = True)
             hist_widget.draw()
 
     '''
