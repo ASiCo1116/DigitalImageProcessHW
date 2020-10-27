@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from time import time
 from sys import argv
 from os import getcwd
 from cv2 import imread, split, merge
 from numpy import zeros, arange, float32, sum, array, histogram, cumsum, int, around, divmod, floor, ceil, reshape, any, dot, random, median, amax, amin, ones
 from scipy.signal import convolve2d
-from scipy.ndimage import gaussian_filter, gaussian_laplace, sobel
+from scipy.ndimage import gaussian_filter, gaussian_laplace, sobel, laplace
 from PyQt5.QtCore import (QSize)
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QHBoxLayout, QWidget, QFileDialog, QTableWidget, QTableWidgetItem)
 
@@ -59,6 +60,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.raw.axes.imshow(self.gray_img, cmap='gray')
         self.raw.axes.set_axis_off()
         self.raw.draw()
+
+        self.processed.axes.cla()
+        self.processed.axes.imshow(self.processed_img, cmap='gray', vmin=0, vmax=255)
+        self.processed.axes.set_axis_off()
+        self.processed.draw()
     
     def saveImage(self, e):
         '''
@@ -102,9 +108,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.tableWidget.setItem(r, c, QTableWidgetItem(str(rd[r][c])))
 
     def process(self):
+        start_time = time()
         
         btnId = self.buttonGroup.checkedId()
-        print(btnId)
 
         if btnId == -7:
             print('conv')
@@ -132,6 +138,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.processed.axes.imshow(self.processed_img, cmap='gray', vmin=0, vmax=255)
         self.processed.axes.set_axis_off()
         self.processed.draw()
+
+        print(f'process done.')
+        print(f'total time: {time()-start_time:.2f}')
     
     def _conv(self):
         self.kernel = \
@@ -208,6 +217,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _LoG(self):
 
         self.processing_img = gaussian_laplace(self.processed_img, sigma = self.LoGBox.value())
+
+        # self.processing_img = laplace(gaussian_filter(self.processed_img, sigma = self.gauBox.value()))
 
         self.processing_img[self.processing_img >= 255] = 255
         self.processing_img[self.processing_img <= 0] = 0
