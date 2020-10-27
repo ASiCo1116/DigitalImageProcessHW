@@ -5,7 +5,7 @@ from os import getcwd
 from cv2 import imread, split, merge
 from numpy import zeros, arange, float32, sum, array, histogram, cumsum, int, around, divmod, floor, ceil, reshape, any, dot, random, median, amax, amin, ones
 from scipy.signal import convolve2d
-from scipy.ndimage import gaussian_filter
+from scipy.ndimage import gaussian_filter, gaussian_laplace, sobel
 from PyQt5.QtCore import (QSize)
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QHBoxLayout, QWidget, QFileDialog, QTableWidget, QTableWidgetItem)
 
@@ -89,9 +89,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def reset(self):
         self.processed_img = self.gray_img.copy()
+        self.processed.axes.cla()
+        self.processed.axes.imshow(self.processed_img, cmap='gray', vmin=0, vmax=255)
+        self.processed.axes.set_axis_off()
+        self.processed.draw()
 
     def random(self):
-        rd = (around(random.rand(self.current_size, self.current_size) * 10, 2)).astype(float)
+        rd = ((random.rand(self.current_size, self.current_size) - .5) * 20).astype(int)
 
         for r in range(self.current_size):
             for c in range(self.current_size):
@@ -100,6 +104,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def process(self):
         
         btnId = self.buttonGroup.checkedId()
+        print(btnId)
 
         if btnId == -7:
             print('conv')
@@ -117,8 +122,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             print('gaussian')
             self._gaussian()
         elif btnId == -6:
-            print('laplacian')
-            pass
+            print('sobel')
+            self._sobel()
+        elif btnId == -8:
+            print('LoG')
+            self._LoG()
         
         self.processed.axes.cla()
         self.processed.axes.imshow(self.processed_img, cmap='gray', vmin=0, vmax=255)
@@ -184,7 +192,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.processed_img = self.processing_img.copy()
     
     def _gaussian(self):
-        self.processing_img = gaussian_filter(self.processed_img, sigma = 1)
+        self.processing_img = gaussian_filter(self.processed_img, sigma = self.gauBox.value())
+
+        self.processing_img[self.processing_img >= 255] = 255
+        self.processing_img[self.processing_img <= 0] = 0
+        self.processed_img = self.processing_img.copy()
+    
+    def _sobel(self):
+        self.processing_img = sobel(self.processed_img)
+
+        self.processing_img[self.processing_img >= 255] = 255
+        self.processing_img[self.processing_img <= 0] = 0
+        self.processed_img = self.processing_img.copy()
+
+    def _LoG(self):
+
+        self.processing_img = gaussian_laplace(self.processed_img, sigma = self.LoGBox.value())
 
         self.processing_img[self.processing_img >= 255] = 255
         self.processing_img[self.processing_img <= 0] = 0
