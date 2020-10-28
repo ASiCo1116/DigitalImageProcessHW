@@ -135,10 +135,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self._LoG()
         
         self.processed.axes.cla()
-        self.processed.axes.imshow(self.processed_img, cmap='gray', vmin=0, vmax=255)
+        self.processed.axes.imshow(self.processed_img, cmap='gray')
         self.processed.axes.set_axis_off()
         self.processed.draw()
 
+        print(self.processed_img)
         print(f'process done.')
         print(f'total time: {time()-start_time:.2f}')
     
@@ -157,8 +158,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for c in range(self.processed_img.shape[1] - self.current_size):
                 self.processing_img[r][c] = dot(self.kernel, self.processed_img[r:r+self.current_size, c:c+self.current_size]).sum()
         
-        self.processing_img[self.processing_img >= 255] = 255
-        self.processing_img[self.processing_img <= 0] = 0
+        # self.processing_img[self.processing_img >= 255] = 255
+        # self.processing_img[self.processing_img <= 0] = 0
         self.processed_img = self.processing_img.copy()
 
     def _median(self):
@@ -223,6 +224,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.processing_img[self.processing_img >= 255] = 255
         self.processing_img[self.processing_img <= 0] = 0
         self.processed_img = self.processing_img.copy()
+        print(self.processed_img)
 
 app = QApplication(argv)
 
