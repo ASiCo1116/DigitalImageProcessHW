@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1080</width>
+    <height>900</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Agency FB</family>
+          <pointsize>16</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Raw image</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Agency FB</family>
+          <pointsize>16</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Spectrum</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Agency FB</family>
+          <pointsize>16</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Phase angle</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_4">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Agency FB</family>
+          <pointsize>16</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>IFFT</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="MplCanvas" name="raw" native="true">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>335</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="MplCanvas" name="spectrum" native="true">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>335</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="MplCanvas" name="angle" native="true">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>335</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="MplCanvas" name="ifft" native="true">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>335</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QWidget" name="widget" native="true">
+        <property name="maximumSize">
+         <size>
+          <width>261</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <widget class="QRadioButton" name="ihp">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>0</y>
+           <width>121</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Agency FB</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Ideal high pass</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">filterButton</string>
+         </attribute>
+        </widget>
+        <widget class="QRadioButton" name="bhp">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>151</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Agency FB</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Butterworth high pass</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">filterButton</string>
+         </attribute>
+        </widget>
+        <widget class="QRadioButton" name="ghp">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
+           <width>151</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Agency FB</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Gaussian high pass</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">filterButton</string>
+         </attribute>
+        </widget>
+        <widget class="QRadioButton" name="ilp">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>90</y>
+           <width>121</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Agency FB</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Ideal low pass</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">filterButton</string>
+         </attribute>
+        </widget>
+        <widget class="QRadioButton" name="blp">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>120</y>
+           <width>151</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Agency FB</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Butterworth low pass</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">filterButton</string>
+         </attribute>
+        </widget>
+        <widget class="QRadioButton" name="glp">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>150</y>
+           <width>151</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Agency FB</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Gaussian low pass</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">filterButton</string>
+         </attribute>
+        </widget>
+        <widget class="QRadioButton" name="homo">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>180</y>
+           <width>111</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Agency FB</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Homomophic</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">filterButton</string>
+         </attribute>
+        </widget>
+        <widget class="QRadioButton" name="mob">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>210</y>
+           <width>111</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Agency FB</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Motion blur</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">filterButton</string>
+         </attribute>
+        </widget>
+        <widget class="QRadioButton" name="mobwn">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>240</y>
+           <width>181</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Agency FB</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Motion blur + withe noise</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">filterButton</string>
+         </attribute>
+        </widget>
+        <widget class="QPushButton" name="apply_1">
+         <property name="geometry">
+          <rect>
+           <x>160</x>
+           <y>180</y>
+           <width>91</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Agency FB</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Apply</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="reset_1">
+         <property name="geometry">
+          <rect>
+           <x>160</x>
+           <y>210</y>
+           <width>91</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Agency FB</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Reset</string>
+         </property>
+        </widget>
+        <widget class="QSpinBox" name="cutoff_box">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>30</y>
+           <width>81</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Agency FB</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="minimum">
+          <number>30</number>
+         </property>
+         <property name="maximum">
+          <number>510</number>
+         </property>
+         <property name="singleStep">
+          <number>20</number>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_5">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>0</y>
+           <width>81</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Agency FB</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Cut off</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="MplCanvas" name="filter" native="true">
+        <property name="maximumSize">
+         <size>
+          <width>260</width>
+          <height>269</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="widget_3" native="true">
+        <widget class="QRadioButton" name="inverse">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>0</y>
+           <width>121</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Agency FB</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Inverse</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">denoiseButton</string>
+         </attribute>
+        </widget>
+        <widget class="QRadioButton" name="wiener">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>121</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Agency FB</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Wiener</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">denoiseButton</string>
+         </attribute>
+        </widget>
+        <widget class="QPushButton" name="apply_2">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
+           <width>91</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Agency FB</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Apply</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="reset_2">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
+           <y>60</y>
+           <width>91</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Agency FB</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Reset</string>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="MplCanvas" name="denoise" native="true">
+        <property name="maximumSize">
+         <size>
+          <width>260</width>
+          <height>269</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1080</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MplCanvas</class>
+   <extends>QWidget</extends>
+   <header>mplcanvas.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+ <buttongroups>
+  <buttongroup name="denoiseButton"/>
+  <buttongroup name="filterButton"/>
+ </buttongroups>
+</ui>
