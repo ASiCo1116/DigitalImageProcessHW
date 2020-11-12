@@ -175,14 +175,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for i in range(filter.shape[0]):
                 for j in range(filter.shape[1]):
                     d = ((i - filter.shape[0] / 2)** 2 + (j - filter.shape[1] / 2)** 2)** .5
-                    filter[i][j] = 1 / (1 + (self.cutoff_box.value() / d)**(2 * self.order_box.value()))
+                    filter[i][j] = 1 / (1 + (self.cutoff_box.value() / (d + 10e-8))**(2 * self.order_box.value()))
                     
         if mode == 'low':
             filter = zeros(shape=self.processed_img.shape)
             for i in range(filter.shape[0]):
                 for j in range(filter.shape[1]):
                     d = ((i - filter.shape[0] / 2)** 2 + (j - filter.shape[1] / 2)** 2)** .5
-                    filter[i][j] = 1 / (1 + (d / self.cutoff_box.value())**(2 * self.order_box.value()))
+                    filter[i][j] = 1 / (1 + (d / self.cutoff_box.value() + 10e-8 )**(2 * self.order_box.value()))
         
         _dft = fftshift(dft(self.processed_img, flags=cv.DFT_COMPLEX_OUTPUT))
         self.filtered_img = _dft.copy()
@@ -258,6 +258,45 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def _MBN(self):
 
         pass
+
+    def blur_filter(img,a=0.1,b=0.1,T=1.0):
+        dft1 = np.fft.fft2(img)
+        dft = np.fft.fftshift(dft1)
+        blur = dft.copy()
+        cvtest = np.zeros((dft.shape[0],dft.shape[1],2))
+        
+        for i in range(dft.shape[0]):
+            for j in range(dft.shape[1]):
+                if i ==0 and j == 0:
+                    blur[i,j] = 0
+                    continue
+                x = -1j*(np.pi)*(a*i+b*j)
+                blur[i,j] = (T/(np.pi*(a*i+b*j)))*(np.sin(np.pi*(a*i+b*j)))*(np.exp(x))
+        blur_img_dft = dft*blur
+        
+        cvtest[:,:,0] = np.real(blur_img_dft)
+        cvtest[:,:,1] = np.imag(blur_img_dft)
+
+        cvback = np.fft.ifftshift(cvtest)
+        idft = cv2.idft(cvtest,flags=cv2.DFT_SCALE)
+        magnitude = cv2.magnitude(idft[:,:,0],idft[:,:,1])
+
+        back = np.fft.ifftshift(blur_img_dft)
+        back1 = np.fft.ifft2(back)
+
+        real = (np.real(back1)**2+np.imag(back1)**2)**(1/2)
+        real = to255(real)
+        magnitude = to255(magnitude)    
+    # inverse filter
+        dft2 = np.fft.fft2(magnitude)
+        dft3 = np.fft.fftshift(dft2)
+        dft4 = (dft3+0.1)/blur
+        back2 = np.fft.ifftshift(dft4)
+        back3 = np.fft.ifft2(back2)
+        real1 = (np.real(back3)**2+np.imag(back3)**2)**(1/2)
+        real2 = to255(real1)
+
+        return magnitude
 
 app = QApplication(argv)
 
