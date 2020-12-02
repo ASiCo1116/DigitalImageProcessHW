@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1183</width>
-    <height>895</height>
+    <width>1186</width>
+    <height>929</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,22 +18,31 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetMinimumSize</enum>
+        </property>
         <item>
          <widget class="QWidget" name="widget_6" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="maximumSize">
            <size>
             <width>16777215</width>
             <height>80</height>
            </size>
           </property>
-          <widget class="QWidget" name="">
+          <widget class="QWidget" name="layoutWidget">
            <property name="geometry">
             <rect>
              <x>0</x>
              <y>0</y>
              <width>1161</width>
-             <height>71</height>
+             <height>51</height>
             </rect>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -55,6 +64,12 @@
             </item>
             <item>
              <widget class="QLabel" name="label_2">
+              <property name="maximumSize">
+               <size>
+                <width>150</width>
+                <height>16777215</height>
+               </size>
+              </property>
               <property name="font">
                <font>
                 <family>Arial</family>
@@ -62,7 +77,7 @@
                </font>
               </property>
               <property name="text">
-               <string>Color planes</string>
+               <string>Function</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -117,6 +132,22 @@
               </property>
              </widget>
             </item>
+            <item>
+             <widget class="QLabel" name="mixed_plane_label">
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>16</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Mixed plane</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
          </widget>
@@ -127,10 +158,16 @@
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="MplCanvas" name="raw" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="maximumSize">
            <size>
-            <width>210</width>
-            <height>16777215</height>
+            <width>200</width>
+            <height>250</height>
            </size>
           </property>
           <property name="cursor">
@@ -140,13 +177,19 @@
         </item>
         <item>
          <widget class="QWidget" name="widget_4" native="true">
-          <widget class="QWidget" name="">
+          <property name="maximumSize">
+           <size>
+            <width>149</width>
+            <height>250</height>
+           </size>
+          </property>
+          <widget class="QWidget" name="layoutWidget">
            <property name="geometry">
             <rect>
-             <x>50</x>
+             <x>0</x>
              <y>0</y>
              <width>141</width>
-             <height>238</height>
+             <height>221</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -254,7 +297,7 @@
               <property name="font">
                <font>
                 <family>Arial</family>
-                <pointsize>16</pointsize>
+                <pointsize>14</pointsize>
                </font>
               </property>
               <property name="text">
@@ -268,10 +311,16 @@
         </item>
         <item>
          <widget class="MplCanvas" name="plane1" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="maximumSize">
            <size>
-            <width>210</width>
-            <height>16777215</height>
+            <width>196</width>
+            <height>250</height>
            </size>
           </property>
           <property name="cursor">
@@ -281,10 +330,16 @@
         </item>
         <item>
          <widget class="MplCanvas" name="plane2" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="maximumSize">
            <size>
-            <width>210</width>
-            <height>16777215</height>
+            <width>196</width>
+            <height>250</height>
            </size>
           </property>
           <property name="cursor">
@@ -294,10 +349,35 @@
         </item>
         <item>
          <widget class="MplCanvas" name="plane3" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="maximumSize">
            <size>
-            <width>210</width>
-            <height>16777215</height>
+            <width>196</width>
+            <height>250</height>
+           </size>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="MplCanvas" name="mixed_plane" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>196</width>
+            <height>250</height>
            </size>
           </property>
           <property name="cursor">
@@ -308,27 +388,31 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
-         <widget class="QWidget" name="widget_8" native="true">
+         <widget class="MplCanvas" name="pseudo_processed" native="true">
           <property name="maximumSize">
            <size>
-            <width>16777215</width>
-            <height>100</height>
+            <width>210</width>
+            <height>250</height>
            </size>
           </property>
-          <widget class="QWidget" name="">
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="widget_7" native="true">
+          <widget class="QWidget" name="layoutWidget_3">
            <property name="geometry">
             <rect>
-             <x>0</x>
+             <x>30</x>
              <y>0</y>
-             <width>1161</width>
-             <height>91</height>
+             <width>143</width>
+             <height>211</height>
             </rect>
            </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <layout class="QVBoxLayout" name="verticalLayout_5">
             <item>
-             <widget class="QLabel" name="label_3">
+             <widget class="QRadioButton" name="autumn">
               <property name="font">
                <font>
                 <family>Arial</family>
@@ -336,15 +420,139 @@
                </font>
               </property>
               <property name="text">
-               <string>TextLabel</string>
+               <string>Autumn</string>
               </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+              <attribute name="buttonGroup">
+               <string notr="true">pseudo_group</string>
+              </attribute>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="jet">
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>16</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Jet</string>
+              </property>
+              <attribute name="buttonGroup">
+               <string notr="true">pseudo_group</string>
+              </attribute>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rainbow">
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>16</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Rainbow</string>
+              </property>
+              <attribute name="buttonGroup">
+               <string notr="true">pseudo_group</string>
+              </attribute>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QRadioButton" name="radioButton">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>100</width>
+                  <height>28</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Arial</family>
+                  <pointsize>12</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Custom</string>
+                </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">pseudo_group</string>
+                </attribute>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="color_widget_1" native="true">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>28</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(255, 255, 255);</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="color_widget_2" native="true">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>28</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(0, 0, 0);</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="c_level">
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>28</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>16</pointsize>
+               </font>
+              </property>
+              <property name="minimum">
+               <number>2</number>
+              </property>
+              <property name="maximum">
+               <number>5</number>
+              </property>
+              <property name="value">
+               <number>2</number>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_4">
+             <widget class="QPushButton" name="apply_2">
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>28</height>
+               </size>
+              </property>
               <property name="font">
                <font>
                 <family>Arial</family>
@@ -352,26 +560,7 @@
                </font>
               </property>
               <property name="text">
-               <string>TextLabel</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_5">
-              <property name="font">
-               <font>
-                <family>Arial</family>
-                <pointsize>16</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>TextLabel</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <string>Apply</string>
               </property>
              </widget>
             </item>
@@ -379,38 +568,277 @@
           </widget>
          </widget>
         </item>
+        <item>
+         <widget class="MplCanvas" name="pseudo1" native="true">
+          <property name="maximumSize">
+           <size>
+            <width>210</width>
+            <height>250</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="MplCanvas" name="pseudo2" native="true">
+          <property name="maximumSize">
+           <size>
+            <width>210</width>
+            <height>250</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="MplCanvas" name="pseudo3" native="true">
+          <property name="maximumSize">
+           <size>
+            <width>210</width>
+            <height>250</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="MplCanvas" name="mixed_pseudo" native="true">
+          <property name="maximumSize">
+           <size>
+            <width>210</width>
+            <height>250</height>
+           </size>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QWidget" name="widget_7" native="true">
-          <widget class="QComboBox" name="comboBox">
+         <widget class="MplCanvas" name="kmeans_processed" native="true">
+          <property name="maximumSize">
+           <size>
+            <width>210</width>
+            <height>250</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="widget_3" native="true">
+          <widget class="QWidget" name="layoutWidget_2">
            <property name="geometry">
             <rect>
-             <x>240</x>
-             <y>10</y>
-             <width>171</width>
-             <height>51</height>
+             <x>30</x>
+             <y>0</y>
+             <width>141</width>
+             <height>231</height>
             </rect>
            </property>
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <pointsize>16</pointsize>
-            </font>
-           </property>
-           <item>
-            <property name="text">
-             <string>Test 1</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Test 2</string>
-            </property>
-           </item>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <item>
+             <widget class="QRadioButton" name="rgbBtn_3">
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>RGB</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+              <attribute name="buttonGroup">
+               <string notr="true">btns_2</string>
+              </attribute>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="cmyBtn_3">
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>CMY</string>
+              </property>
+              <attribute name="buttonGroup">
+               <string notr="true">btns_2</string>
+              </attribute>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="hsiBtn_3">
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>HSI</string>
+              </property>
+              <attribute name="buttonGroup">
+               <string notr="true">btns_2</string>
+              </attribute>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="xyzBtn_3">
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>XYZ</string>
+              </property>
+              <attribute name="buttonGroup">
+               <string notr="true">btns_2</string>
+              </attribute>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="labBtn_3">
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>L*a*b*</string>
+              </property>
+              <attribute name="buttonGroup">
+               <string notr="true">btns_2</string>
+              </attribute>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="yuvBtn_3">
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>YUV</string>
+              </property>
+              <attribute name="buttonGroup">
+               <string notr="true">btns_2</string>
+              </attribute>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_7">
+              <item>
+               <widget class="QLabel" name="label_8">
+                <property name="maximumSize">
+                 <size>
+                  <width>22</width>
+                  <height>22</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Arial</family>
+                  <pointsize>12</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>k</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSpinBox" name="k_level">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>22</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>Arial</family>
+                  <pointsize>12</pointsize>
+                 </font>
+                </property>
+                <property name="minimum">
+                 <number>2</number>
+                </property>
+                <property name="maximum">
+                 <number>5</number>
+                </property>
+                <property name="value">
+                 <number>2</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QPushButton" name="apply_3">
+              <property name="font">
+               <font>
+                <family>Arial</family>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Apply</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
+         </widget>
+        </item>
+        <item>
+         <widget class="MplCanvas" name="kplane1" native="true">
+          <property name="maximumSize">
+           <size>
+            <width>210</width>
+            <height>250</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="MplCanvas" name="kplane2" native="true">
+          <property name="maximumSize">
+           <size>
+            <width>210</width>
+            <height>250</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="MplCanvas" name="kplane3" native="true">
+          <property name="maximumSize">
+           <size>
+            <width>210</width>
+            <height>250</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="MplCanvas" name="mixed_kplane" native="true">
+          <property name="maximumSize">
+           <size>
+            <width>210</width>
+            <height>250</height>
+           </size>
+          </property>
          </widget>
         </item>
        </layout>
@@ -432,5 +860,8 @@
  <connections/>
  <buttongroups>
   <buttongroup name="plane_btns"/>
+  <buttongroup name="btns_2"/>
+  <buttongroup name="pseudo_group"/>
+  <buttongroup name="color"/>
  </buttongroups>
 </ui>
