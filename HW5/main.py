@@ -16,6 +16,12 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QFileDialog, QColorDialo
 
 from mainwindow import Ui_MainWindow
 
+def dum(a,an):
+    if (a/an > 0.008856):
+        return (a/an)**(1/3)
+    else:
+        return 7.787 * (a/an) + (16/116)
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     '''
     Main ui
@@ -103,81 +109,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             im_gray = self.processed_img
             im_color = cv.applyColorMap(im_gray, cv.COLORMAP_AUTUMN)
             r, g, b = im_gray[:,:, 0], im_gray[:,:, 1], im_gray[:,:, 2]
-            
-            self.pseudo_processed.axes.cla()
-            self.pseudo_processed.axes.imshow(im_color)
-            self.pseudo_processed.axes.set_axis_off()
-            self.pseudo_processed.draw()
-            
-            self.pseudo1.axes.cla()
-            self.pseudo1.axes.imshow(r, cmap = 'gray')
-            self.pseudo1.axes.set_axis_off()
-            self.pseudo1.draw()
 
-            self.pseudo2.axes.cla()
-            self.pseudo2.axes.imshow(g, cmap = 'gray')
-            self.pseudo2.axes.set_axis_off()
-            self.pseudo2.draw()
-
-            self.pseudo3.axes.cla()
-            self.pseudo3.axes.imshow(b, cmap = 'gray')
-            self.pseudo3.axes.set_axis_off()
-            self.pseudo3.draw()
+            self.draw_on(self.pseudo1, r, 'gray')
+            self.draw_on(self.pseudo2, g, 'gray')
+            self.draw_on(self.pseudo3, b, 'gray')
+            self.draw_on(self.mixed_pseudo, im_color)
 
         elif btnId == -3:
             im_gray = self.processed_img
             im_color = cv.applyColorMap(im_gray, cv.COLORMAP_JET)
             r, g, b = im_gray[:,:, 0], im_gray[:,:, 1], im_gray[:,:, 2]
             
-            self.pseudo_processed.axes.cla()
-            self.pseudo_processed.axes.imshow(im_color)
-            self.pseudo_processed.axes.set_axis_off()
-            self.pseudo_processed.draw()
-            
-            self.pseudo1.axes.cla()
-            self.pseudo1.axes.imshow(r, cmap = 'gray')
-            self.pseudo1.axes.set_axis_off()
-            self.pseudo1.draw()
-
-            self.pseudo2.axes.cla()
-            self.pseudo2.axes.imshow(g, cmap = 'gray')
-            self.pseudo2.axes.set_axis_off()
-            self.pseudo2.draw()
-
-            self.pseudo3.axes.cla()
-            self.pseudo3.axes.imshow(b, cmap = 'gray')
-            self.pseudo3.axes.set_axis_off()
-            self.pseudo3.draw()
+            self.draw_on(self.pseudo1, r, 'gray')
+            self.draw_on(self.pseudo2, g, 'gray')
+            self.draw_on(self.pseudo3, b, 'gray')
+            self.draw_on(self.mixed_pseudo, im_color)
 
         elif btnId == -4:
             im_gray = self.processed_img
             im_color = cv.applyColorMap(im_gray, cv.COLORMAP_RAINBOW)
             r, g, b = im_gray[:,:, 0], im_gray[:,:, 1], im_gray[:,:, 2]
             
-            self.pseudo_processed.axes.cla()
-            self.pseudo_processed.axes.imshow(im_color)
-            self.pseudo_processed.axes.set_axis_off()
-            self.pseudo_processed.draw()
-            
-            self.pseudo1.axes.cla()
-            self.pseudo1.axes.imshow(r, cmap = 'gray')
-            self.pseudo1.axes.set_axis_off()
-            self.pseudo1.draw()
-
-            self.pseudo2.axes.cla()
-            self.pseudo2.axes.imshow(g, cmap = 'gray')
-            self.pseudo2.axes.set_axis_off()
-            self.pseudo2.draw()
-
-            self.pseudo3.axes.cla()
-            self.pseudo3.axes.imshow(b, cmap = 'gray')
-            self.pseudo3.axes.set_axis_off()
-            self.pseudo3.draw()
+            self.draw_on(self.pseudo1, r, 'gray')
+            self.draw_on(self.pseudo2, g, 'gray')
+            self.draw_on(self.pseudo3, b, 'gray')
+            self.draw_on(self.mixed_pseudo, im_color)
 
         elif btnId == -5:
-            im_gray = self.processed_img
-
+            gray = 0.299 * self.r + 0.587 * self.g + 0.114 * self.b
             level = self.c_level.value() - 1
+
             r1, g1, b1 = self.color_1.red(), self.color_1.green(), self.color_1.blue()
             r2, g2, b2 = self.color_2.red(), self.color_2.green(), self.color_2.blue()
 
@@ -192,32 +153,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for x in range(self.r.shape[0]):
                 for y in range(self.r.shape[1]):
 
-                    new_r[x][y] = around(r1 + around(im_gray[x][y] * level / 255) * r_step)
-                    new_g[x][y] = around(g1 + around(im_gray[x][y] * level / 255) * g_step)
-                    new_b[x][y] = around(b1 + around(im_gray[x][y] * level / 255) * b_step)
+                    new_r[x][y] = around(r1 + np.round(gray[x][y] * level / 255) * r_step)
+                    new_g[x][y] = around(g1 + np.round(gray[x][y] * level / 255) * g_step)
+                    new_b[x][y] = around(b1 + np.round(gray[x][y] * level / 255) * b_step)
             
-            result = dstack([new_r, new_g, new_b])
-            print(result)
+            new_r, new_g, new_b = new_r.astype(np.int), new_g.astype(np.int), new_b.astype(np.int)
+            mix = dstack([new_r, new_g, new_b])
+            mix[mix > 255] = 255
             
-            self.pseudo_processed.axes.cla()
-            self.pseudo_processed.axes.imshow(result, vmin = 0, vmax = 255)
-            self.pseudo_processed.axes.set_axis_off()
-            self.pseudo_processed.draw()
-            
-            self.pseudo1.axes.cla()
-            self.pseudo1.axes.imshow(self.r, cmap = 'gray')
-            self.pseudo1.axes.set_axis_off()
-            self.pseudo1.draw()
-
-            self.pseudo2.axes.cla()
-            self.pseudo2.axes.imshow(self.g, cmap = 'gray')
-            self.pseudo2.axes.set_axis_off()
-            self.pseudo2.draw()
-
-            self.pseudo3.axes.cla()
-            self.pseudo3.axes.imshow(self.b, cmap = 'gray')
-            self.pseudo3.axes.set_axis_off()
-            self.pseudo3.draw()
+            self.draw_on(self.pseudo1, self.r, 'gray')
+            self.draw_on(self.pseudo2, self.g, 'gray')
+            self.draw_on(self.pseudo3, self.b, 'gray')
+            self.draw_on(self.mixed_pseudo, mix)
         
     def converting_planes(self):
         btnId = self.plane_btns.checkedId()  #-2 ~ -7
@@ -239,17 +186,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         btnId = self.btns_2.checkedId()
 
         if btnId == -2:
-            self.kmeans(self.rgb(self.kplane1, self.kplane2, self.kplane3), self.k_level.value())
+            self.kmeans(self.rgb(self.kplane1, self.kplane2, self.kplane3, self.kmeans_processed), self.k_level.value())
         elif btnId == -3:
-            self.kmeans(self.cmy(self.kplane1, self.kplane2, self.kplane3), self.k_level.value() )
+            self.kmeans(self.cmy(self.kplane1, self.kplane2, self.kplane3, self.kmeans_processed), self.k_level.value() )
         elif btnId == -4:
-            self.kmeans(self.hsi(self.kplane1, self.kplane2, self.kplane3), self.k_level.value())
+            self.kmeans(self.hsi(self.kplane1, self.kplane2, self.kplane3, self.kmeans_processed), self.k_level.value())
         elif btnId == -5:
-            self.kmeans(self.xyz(self.kplane1, self.kplane2, self.kplane3), self.k_level.value())
+            self.kmeans(self.xyz(self.kplane1, self.kplane2, self.kplane3, self.kmeans_processed), self.k_level.value())
         elif btnId == -6:
-            self.kmeans(self.lab(self.kplane1, self.kplane2, self.kplane3), self.k_level.value())
+            self.kmeans(self.lab(self.kplane1, self.kplane2, self.kplane3, self.kmeans_processed), self.k_level.value())
         elif btnId == -7:
-            self.kmeans(self.yuv(self.kplane1, self.kplane2, self.kplane3), self.k_level.value())
+            self.kmeans(self.yuv(self.kplane1, self.kplane2, self.kplane3, self.kmeans_processed), self.k_level.value())
 
     def rgb(self, p1, p2, p3, p4):
         self.draw_on(p1, self.r, 'gray', 0, 255)
@@ -325,100 +272,84 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         mix[mix > 255] = 255
         self.draw_on(p4, mix)
 
-        return mix, x_, y_, z
+        return mix
     
     def lab(self, p1, p2, p3, p4):
-        r = img[:, :, 0]
-        g = img[:, :, 1]
-        b = img[:, :, 2]
-        x,y,z = xyz(img)
-        x = x/255
-        y = y/255
-        z = z/255
-        xn = 0.950456
-        yn = 1.0
-        zn = 1.088754	
-        l = r.shape[0]
-        w = r.shape[1]
-        l1 = np.zeros((l,w))
-        a1 = np.zeros((l,w))
-        b1 = np.zeros((l,w))
-
-        for i in range(l):
-            for j in range(w):
-
-                if((y[i,j]/yn) > 0.008856):
-                    l1[i,j] = 116 * (y[i,j]/yn)**(1/3) - 16
-                else:
-                    903.3 * y[i,j]/yn
-                a1[i,j] = 500 * ( f(x[i,j],xn) - f(y[i,j],yn) )
-                b1[i,j] = 200 * ( f(y[i,j],yn) - f(z[i,j],zn) )
-        
-        l1 = l1 * 255
-        a1 = a1 * 255
-        b1 = b1 * 255
-
-        return l1,a1,b1
-        ########################################################
-        #Not done yet
-
-        p1.axes.cla()
-        p1.axes.imshow(255 - self.r, cmap='gray')
-        p1.axes.set_axis_off()
-        p1.draw()
-
-        p2.axes.cla()
-        p2.axes.imshow(255 - self.g, cmap='gray')
-        p2.axes.set_axis_off()
-        p2.draw()
-
-        p3.axes.cla()
-        p3.axes.imshow(255 - self.b, cmap='gray')
-        p3.axes.set_axis_off()
-        p3.draw()
-    
-    def yuv(self, p1, p2, p3, p4):
-        self.yy, self.u, self.v = zeros(shape=self.r.shape), zeros(shape=self.r.shape), zeros(shape=self.r.shape)
+        x_, y_, z = zeros(self.r.shape), zeros(self.r.shape), zeros(self.r.shape)
         
         for x in range(self.r.shape[0]):
             for y in range(self.r.shape[1]):
-                self.yy[x][y] = 0.299 * self.r[x][y] + 0.587 * self.g[x][y] + 0.114 * self.b[x][y]
-                self.u[x][y] = -0.169 * self.r[x][y] + -0.331 * self.g[x][y] + 0.5 * self.b[x][y] + 128
-                self.v[x][y] = 0.5 * self.r[x][y] + -0.419 * self.g[x][y] + 0.081 * self.b[x][y] + 128
+                x_[x][y] = 0.412453 * self.r[x][y] + 0.35758 * self.g[x][y] + 0.180423 * self.b[x][y]
+                y_[x][y] = 0.212671 * self.r[x][y] + 0.71516 * self.g[x][y] + 0.072169 * self.b[x][y]
+                z[x][y] = 0.019334 * self.r[x][y] + 0.119193 * self.g[x][y] + 0.950227 * self.b[x][y]
 
-        p1.axes.cla()
-        p1.axes.imshow(self.yy, cmap='gray')
-        p1.axes.set_axis_off()
-        p1.draw()
+        x_, y_, z = x_ / 255, y_ / 255, z / 255
+        
+        xn = 0.950456
+        yn = 1.0
+        zn = 1.088754
+        l, a, b = zeros(self.r.shape), zeros(self.r.shape), zeros(self.r.shape)
 
-        p2.axes.cla()
-        p2.axes.imshow(self.u, cmap='gray')
-        p2.axes.set_axis_off()
-        p2.draw()
+        for x in range(self.r.shape[0]):
+            for y in range(self.r.shape[1]):
+                if y_[x][y] / yn > .008856:
+                    l[x][y] = 116 * (y_[x][y]/yn)**(1/3) - 16
+                else:
+                    903.3 * y_[x][y]/yn
+                a[x][y] = 500 * (dum(x_[x][y], xn) - dum(y_[x][y], yn))
+                b[x][y] = 200 * (dum(y_[x][y], yn) - dum(z[x][y], zn))
+        
+        l = l * 255
+        a = a * 255
+        b = b * 255
 
-        p3.axes.cla()
-        p3.axes.imshow(self.v, cmap='gray')
-        p3.axes.set_axis_off()
-        p3.draw()
-    
+        l, a, b = l.astype(np.int), a.astype(np.int), b.astype(np.int)
+        mix = dstack([l, a, b])
+        mix[mix > 255] = 255
+
+        self.draw_on(p1, l, 'gray')
+        self.draw_on(p2, a, 'gray')
+        self.draw_on(p3, b, 'gray')
+        self.draw_on(p4, mix)
+
+        return mix
+
+    def yuv(self, p1, p2, p3, p4):
+        y_, u, v = zeros(self.r.shape), zeros(self.r.shape), zeros(self.r.shape)
+        
+        for x in range(self.r.shape[0]):
+            for y in range(self.r.shape[1]):
+
+                y_[x][y] = 0.299 * self.r[x][y] + 0.587 * self.g[x][y] + 0.114 * self.b[x][y]
+                u[x][y] = -0.169 * self.r[x][y] + -0.331 * self.g[x][y] + 0.5 * self.b[x][y] + 128
+                v[x][y] = 0.5 * self.r[x][y] + -0.419 * self.g[x][y] + 0.081 * self.b[x][y] + 128
+        
+        y_, u, v = y_.astype(np.int), u.astype(np.int), v.astype(np.int)
+        mix = dstack([y_, u, v])
+        mix[mix > 255] = 255
+
+        self.draw_on(p1, y_, 'gray')
+        self.draw_on(p2, u, 'gray')
+        self.draw_on(p3, v, 'gray')
+        self.draw_on(p4, mix)
+
+        return mix
+
     def kmeans(self, img, k):
         Z = img.reshape((-1, 3))
         Z = float32(Z)
-        print(Z)
         criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 10, 1.0)
 
         ret, label, center = cv.kmeans(Z, k, None, criteria, 10, cv.KMEANS_RANDOM_CENTERS)
-
-        print(center)
 
         center = uint8(center)
         res = center[label.flatten()]
         res2 = res.reshape((img.shape))
         
-        self.kmeans_processed.axes.cla()
-        self.kmeans_processed.axes.imshow(res2)
-        self.kmeans_processed.axes.set_axis_off()
-        self.kmeans_processed.draw()
+        self.mixed_kplane.axes.cla()
+        self.mixed_kplane.axes.imshow(res2)
+        self.mixed_kplane.axes.set_axis_off()
+        self.mixed_kplane.draw()
 
 app = QApplication(argv)
 
